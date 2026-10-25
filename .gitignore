@@ -1,0 +1,46 @@
+# Local environments and caches
+.venv/
+venv/
+env/
+.cache/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Downloaded neural-network weights and generated experiment artifacts
+/models/
+/results/
+/tmp/
+*.ckpt
+*.safetensors
+*.pt
+*.pth
+*.onnx
+*.part
+*.log
+
+# Local reference material; not required to run the code
+/paper/
+/*.pptx
+
+# Local editor settings and credentials
+.idea/
+.vscode/
+.codex/
+.agents/
+.aws/
+*.iml
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+__MACOSX/
+._*
+*.swp

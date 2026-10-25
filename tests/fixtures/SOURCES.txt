@@ -1,0 +1,4 @@
+NIQE verification fixture: baboon.png
+Source: https://github.com/XPixelGroup/BasicSR/blob/8d56e3a045f9fb3e1d8872f92ee4a4f07f886b0a/test_scripts/data/baboon.png
+BasicSR reference NIQE: 5.7295763; MATLAB R2021a: 5.72957338.
+The corresponding source license is grdh_eval/vendor/LICENSE_BasicSR.txt.
