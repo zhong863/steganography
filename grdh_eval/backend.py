@@ -68,8 +68,8 @@ class ModelConfig:
             raise ValueError("Guidance values must be finite")
         if self.attention not in ("original", "sdpa"):
             raise ValueError("attention must be original or sdpa")
-        if self.image_size not in (256, 512):
-            raise ValueError("image_size must be 256 or 512")
+        if self.image_size != 512:
+            raise ValueError("Evaluation uses 512x512 images")
 
 
 class StableDiffusionBackend:

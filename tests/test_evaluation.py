@@ -82,9 +82,7 @@ class CodecTests(unittest.TestCase):
         self.assertEqual(SecretCodec().payload_size, 16384)
         self.assertEqual(SecretCodec(CodecConfig(repeat=2)).payload_size, 8192)
         self.assertEqual(SecretCodec(CodecConfig(bits=2, repeat=2)).payload_size, 16384)
-        smaller = SecretCodec(CodecConfig(shape=(4, 32, 32)))
-        self.assertEqual(smaller.payload_size, 4096)
-        self.assertEqual(smaller.payload_size / 256 ** 2, SecretCodec().payload_size / 512 ** 2)
+        self.assertEqual(SecretCodec(CodecConfig(bits=2)).payload_size, 32768)
 
     def test_soft_evidence_can_correct_hard_majority_error(self):
         config = CodecConfig(repeat=3, payload_bits=1, shape=(1, 2, 2))

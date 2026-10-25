@@ -9,7 +9,7 @@ Paper Link: https://ieeexplore.ieee.org/abstract/document/10637346
 
 新增入口为 `python -m grdh_eval`，包含 PPT 评分公式、三种独立攻击、NIQE、真实比特编解码、确定性恢复、重复编码与软判决实验。原始算法脚本保留。
 
-环境准备、模型下载、单张测试、候选比较与 100 条 prompt 评测见 [EVALUATION.md](./EVALUATION.md)。默认提取端使用空 prompt；原仓库的已知 prompt 条件可单独对照。结果会记录样本数与完整协议，不将潜变量模拟视作课程成绩。
+环境准备、模型下载、单张测试、候选比较与 100 条 prompt 评测见 [EVALUATION.md](./EVALUATION.md)。当前评测统一使用 512×512 图像，默认提取端使用空 prompt；原仓库的已知 prompt 条件可单独对照。结果会记录样本数与完整协议。
 
 Git 仓库包含代码、配置、测试、说明文档和 prompt 数据。模型权重、实验结果、虚拟环境、缓存，以及本地 `paper/` 论文和作业 PPT 不随代码提交。模型准备方法见上述评测说明；NIQE 必需的参考统计参数和测试样图保留在代码仓库中。
 
