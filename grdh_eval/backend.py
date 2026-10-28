@@ -56,6 +56,7 @@ class ModelConfig:
     threads: int = 4
     attention: str = "original"
     image_size: int = 512
+    receiver_filter: str = "none"
 
     def __post_init__(self):
         if self.order not in (1, 2, 3) or min(self.generation_steps, self.inversion_steps) < self.order:
@@ -70,6 +71,8 @@ class ModelConfig:
             raise ValueError("attention must be original or sdpa")
         if self.image_size != 512:
             raise ValueError("Evaluation uses 512x512 images")
+        if self.receiver_filter not in ("none", "auto_nlm"):
+            raise ValueError("Unknown receiver filter")
 
 
 class StableDiffusionBackend:
@@ -176,6 +179,18 @@ class StableDiffusionBackend:
         return to_uint8(image / 2 + 0.5)
 
     @torch.no_grad()
+    def generate_many(self, latents, prompt):
+        """Generate one candidate pair using the original single-image solver."""
+        latents = np.asarray(latents, dtype=np.float32)
+        expected = self.config.image_size // 8
+        if (latents.ndim != 4 or latents.shape[1:] != (4, expected, expected)
+                or not 1 <= len(latents) <= 2 or not np.isfinite(latents).all()):
+            raise ValueError("Expected one or two finite candidate latents")
+        # The author's solver broadcasts its schedule for batch size one.
+        # Keep its math and memory footprint intact by evaluating serially.
+        return np.stack([self.generate(latent, prompt) for latent in latents])
+
+    @torch.no_grad()
     def invert(self, image_unit, prompt=None, seed=0):
         self._start_phase("inversion")
         if self.config.prompt_mode == "known" and prompt is None:
@@ -186,6 +201,9 @@ class StableDiffusionBackend:
             raise ValueError("Received RGB image dimensions must match the shared image_size")
         if image.min() < 0 or image.max() > 1:
             raise ValueError("Received image must be in [0,1]")
+        if self.config.receiver_filter == "auto_nlm":
+            from .preprocess import denoise_received
+            image = denoise_received(image)
         # Sampling posterior is an explicit baseline ablation, with isolated RNG.
         devices = [self.device.index or 0] if self.device.type == "cuda" else []
         with torch.random.fork_rng(devices=devices), self.scope():

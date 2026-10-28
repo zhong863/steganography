@@ -39,7 +39,7 @@ def environment():
 def summarize(rows, planned_count, scope):
     result = {"status": "completed" if len(rows) == planned_count else "partial", "scope": scope,
               "images": len(rows), "planned_images": planned_count,
-              "course_sample_count_met": len(rows) == 100 and scope == "final",
+              "course_sample_count_met": len(rows) == 100 and scope in ("final", "ecc_final"),
               "official_equivalence": False,
               "protocol_note": "PPT formula; attack/NIQE conventions await TA confirmation."}
     if not rows:
@@ -62,8 +62,9 @@ def check_generation_source(source, current):
         fallback = {"attention": "original", "image_size": 512}.get(field)
         if source["model"].get(field, fallback) != current["model"].get(field, fallback):
             raise ValueError("Generation cache differs in model.%s" % field)
-    left = {k: v for k, v in source["codec"].items() if k != "decision"}
-    right = {k: v for k, v in current["codec"].items() if k != "decision"}
+    defaults = {"ecc": "none", "decode_gain": 1.0}
+    left = {k: v for k, v in dict(defaults, **source["codec"]).items() if k not in ("decision", "decode_gain")}
+    right = {k: v for k, v in dict(defaults, **current["codec"]).items() if k not in ("decision", "decode_gain")}
     if left != right:
         raise ValueError("Generation cache encoding differs; new carriers must be generated")
 
@@ -98,6 +99,9 @@ def run_evaluation(backend, codec_config, attack_config, prompts, output, split=
         previous.setdefault("generation_source", None)
         previous["model"].setdefault("attention", "original")
         previous["model"].setdefault("image_size", 512)
+        previous["model"].setdefault("receiver_filter", "none")
+        previous["codec"].setdefault("ecc", "none")
+        previous["codec"].setdefault("decode_gain", 1.0)
         if previous != manifest:
             raise ValueError("Resume settings or input files do not match the original manifest")
     else:

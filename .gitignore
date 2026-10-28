@@ -1,5 +1,6 @@
 # Local environments and caches
 .venv/
+.venv-py38/
 venv/
 env/
 .cache/

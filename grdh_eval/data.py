@@ -4,7 +4,8 @@ import hashlib
 import random
 from pathlib import Path
 
-SPLITS = {"dev": (0, 10), "validation": (10, 30), "final": (30, 130)}
+SPLITS = {"dev": (0, 10), "validation": (10, 30), "final": (30, 130),
+          "ecc_validation": (130, 150), "ecc_final": (150, 250)}
 
 
 def select_prompts(path, split="dev", count=None, seed=2026):

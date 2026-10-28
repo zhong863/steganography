@@ -1,0 +1,53 @@
+{
+  "model": {
+    "checkpoint": "models/sd15/v1-5-pruned-emaonly.safetensors",
+    "clip_dir": "models/sd15/clip",
+    "config": "configs/stable-diffusion/ldm.yaml",
+    "device": "cuda:0",
+    "precision": "autocast",
+    "generation_steps": 20,
+    "inversion_steps": 20,
+    "order": 2,
+    "guidance": 1,
+    "inversion_guidance": 1.0,
+    "posterior": "mode",
+    "prompt_mode": "empty",
+    "threads": 4,
+    "attention": "sdpa",
+    "image_size": 512,
+    "receiver_filter": "none"
+  },
+  "split": "ecc_final",
+  "count": 100,
+  "seed": 2026,
+  "message_seed_offset": 48271,
+  "keep_clean": 1,
+  "cache_latents": false,
+  "diagnose_channel": true,
+  "candidates": [
+    {
+      "name": "uncoded",
+      "codec": {}
+    },
+    {
+      "name": "conv12_whiten",
+      "codec": {
+        "bits": 1,
+        "repeat": 1,
+        "decision": "soft",
+        "whiten": true,
+        "seed_kernel": 100,
+        "seed_shuffle": 101,
+        "seed_code": 102,
+        "shape": [
+          4,
+          64,
+          64
+        ],
+        "payload_bits": null,
+        "ecc": "conv12",
+        "decode_gain": 1.0
+      }
+    }
+  ]
+}

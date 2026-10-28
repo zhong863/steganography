@@ -37,11 +37,14 @@ def parser():
     p.add_argument("--inversion-guidance", type=float, default=1)
     p.add_argument("--posterior", choices=("sample", "mode"), default="mode")
     p.add_argument("--prompt-mode", choices=("empty", "known"), default="empty")
+    p.add_argument("--receiver-filter", choices=("none", "auto_nlm"), default="none")
     p.add_argument("--bits", type=int, choices=(1, 2, 4), default=1)
     p.add_argument("--repeat", type=int, default=1)
     p.add_argument("--decision", choices=("hard", "soft"), default="soft")
     p.add_argument("--whiten", action="store_true")
     p.add_argument("--payload-bits", type=int)
+    p.add_argument("--ecc", choices=("none", "conv12", "conv23", "conv34", "hamming15"), default="none")
+    p.add_argument("--decode-gain", type=float, default=1.0)
     p.add_argument("--noise-domain", choices=("unit", "signed"), default="unit")
     p.add_argument("--niqe-color", choices=("y", "gray"), default="y")
     p.add_argument("--output", type=Path, required=True)
@@ -74,9 +77,11 @@ def evaluate(args):
                         attention=args.attention,
                         generation_steps=args.generation_steps, inversion_steps=args.inversion_steps,
                         order=args.order, guidance=args.guidance, inversion_guidance=args.inversion_guidance,
-                        posterior=args.posterior, prompt_mode=args.prompt_mode)
+                        posterior=args.posterior, prompt_mode=args.prompt_mode,
+                        receiver_filter=args.receiver_filter)
     codec = CodecConfig(bits=args.bits, repeat=args.repeat, decision=args.decision,
-                        whiten=args.whiten, payload_bits=args.payload_bits)
+                        whiten=args.whiten, payload_bits=args.payload_bits,
+                        ecc=args.ecc, decode_gain=args.decode_gain)
     attacks = AttackConfig(noise_domain=args.noise_domain)
     # Validate prompt split before allocating a multi-GB model.
     from .data import select_prompts

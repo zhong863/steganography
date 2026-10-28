@@ -1,0 +1,85 @@
+{
+  "split": "final",
+  "count": 100,
+  "seed": 2026,
+  "keep_clean": 3,
+  "cache_latents": false,
+  "candidates": [
+    {
+      "name": "reference",
+      "model": {
+        "checkpoint": "models/sd15/author-nonema-inference.safetensors",
+        "clip_dir": "models/sd15/clip",
+        "config": "configs/stable-diffusion/ldm.yaml",
+        "device": "cuda:0",
+        "precision": "autocast",
+        "generation_steps": 20,
+        "inversion_steps": 20,
+        "order": 2,
+        "guidance": 5.0,
+        "inversion_guidance": 1.0,
+        "posterior": "mode",
+        "prompt_mode": "empty",
+        "threads": 4,
+        "attention": "sdpa",
+        "image_size": 512,
+        "receiver_filter": "none"
+      },
+      "codec": {
+        "bits": 1,
+        "repeat": 1,
+        "decision": "hard",
+        "whiten": false,
+        "seed_kernel": 100,
+        "seed_shuffle": 101,
+        "seed_code": 102,
+        "shape": [
+          4,
+          64,
+          64
+        ],
+        "payload_bits": null,
+        "ecc": "none",
+        "decode_gain": 1.0
+      }
+    },
+    {
+      "name": "optimized",
+      "model": {
+        "checkpoint": "models/sd15/v1-5-pruned-emaonly.safetensors",
+        "clip_dir": "models/sd15/clip",
+        "config": "configs/stable-diffusion/ldm.yaml",
+        "device": "cuda:0",
+        "precision": "autocast",
+        "generation_steps": 20,
+        "inversion_steps": 20,
+        "order": 2,
+        "guidance": 1,
+        "inversion_guidance": 1.0,
+        "posterior": "mode",
+        "prompt_mode": "empty",
+        "threads": 4,
+        "attention": "sdpa",
+        "image_size": 512,
+        "receiver_filter": "none"
+      },
+      "codec": {
+        "bits": 1,
+        "repeat": 1,
+        "decision": "soft",
+        "whiten": false,
+        "seed_kernel": 100,
+        "seed_shuffle": 101,
+        "seed_code": 102,
+        "shape": [
+          4,
+          64,
+          64
+        ],
+        "payload_bits": null,
+        "ecc": "none",
+        "decode_gain": 1.0
+      }
+    }
+  ]
+}

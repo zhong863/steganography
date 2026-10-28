@@ -11,6 +11,12 @@ Paper Link: https://ieeexplore.ieee.org/abstract/document/10637346
 
 环境准备、模型下载、单张测试、候选比较与 100 条 prompt 评测见 [EVALUATION.md](./EVALUATION.md)。当前评测统一使用 512×512 图像，默认提取端使用空 prompt；原仓库的已知 prompt 条件可单独对照。结果会记录样本数与完整协议。
 
+2026-10-28 的 GPU 优化完成了两组各 100 张的独立最终对照，本地协议总分由 76.76 提高到 83.70。完整记录、失败方案与局限见评测说明第 10 节。冻结的候选配置为 [configs/evaluation/optimized.json](./configs/evaluation/optimized.json)，两组配对对照为 [configs/evaluation/comparison.json](./configs/evaluation/comparison.json)；新批量入口只保存少量示例图及完整指标，以控制磁盘使用。
+
+后续误差分解与纠错复测见评测说明第 12 节：新的 100 张配对测试中，无纠错 83.75 分、半码率卷积纠错 83.22 分。纠错提高提取准确率，但未显示稳定综合提分，因此保留上述最佳配置。纠错对照可通过 [configs/evaluation/ecc_comparison.json](./configs/evaluation/ecc_comparison.json) 复现。
+
+本机后续实验使用 `.venv-py38/bin/python`：Python 3.8.20、PyTorch 2.1.0+cu118；旧的 `.venv` 为 Python 3.10，保留供既有结果复核。课程机器的 Ubuntu 和 CUDA 具体版本尚未提供，本机仍需在课程机器上复核。
+
 Git 仓库包含代码、配置、测试、说明文档和 prompt 数据。模型权重、实验结果、虚拟环境、缓存，以及本地 `paper/` 论文和作业 PPT 不随代码提交。模型准备方法见上述评测说明；NIQE 必需的参考统计参数和测试样图保留在代码仓库中。
 
 ## Download Weights

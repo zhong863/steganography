@@ -1,5 +1,7 @@
 # Install torch/torchvision for your CPU or CUDA platform separately.
 # Course target: Python 3.8, torch 2.1.0, torchvision 0.16.0.
+# PyTorch Lightning 1.9 imports pkg_resources, removed in setuptools 81.
+setuptools>=65,<81
 numpy==1.24.4
 scipy==1.10.1
 Pillow==10.4.0
@@ -13,3 +15,4 @@ einops==0.7.0
 tqdm==4.66.5
 matplotlib==3.7.5
 safetensors==0.4.5
+requests>=2.28,<3
